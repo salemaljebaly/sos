@@ -22,9 +22,11 @@ export class UsersService {
     return user;
   }
 
-  findAll() :Promise<User[]> {
-    //TODO fix return password
-    return this.usersRepository.find();
+  async findAll() :Promise<User[]> {
+    const users = await this.usersRepository.find();
+    // remove password from response
+    users.map(user =>{ delete user.password;});
+    return users;
   }
 
   async findOneById(id: number) : Promise<User> {
