@@ -10,15 +10,12 @@ async function bootstrap() {
   .setDescription('The SOS API description')
   .setVersion('1.0')
   .addTag('sos')
-  .addBearerAuth(
-    { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' },
-    'access-token',
-    )
+  .addBearerAuth()
   .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/', app, document);
 
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT);
 }
 bootstrap();

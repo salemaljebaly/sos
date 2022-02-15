@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { AR } from 'src/locale/ar';
 import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { JwtAuthGuard } from './jwt.auth.gaurd';
@@ -11,6 +12,8 @@ export class AuthController {
 
   
   @Post()
+  @ApiCreatedResponse({description: AR.user_login})
+  @ApiUnauthorizedResponse({description: AR.wrong_email_or_password})
   async login(@Body() authLoginDto: AuthLoginDto) {
     return this.authService.login(authLoginDto);
   }
