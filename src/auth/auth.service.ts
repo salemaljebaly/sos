@@ -19,10 +19,13 @@ export class AuthService {
     
         const payload = {
           userId: user.id,
+          username : user.username,
+          firstname:user.firstName,
+          lastname:user.lastName
         };
     
         return {
-          access_token: this.jwtService.sign(payload),
+          access_token: this.jwtService.sign(payload)
         };
       }
     
