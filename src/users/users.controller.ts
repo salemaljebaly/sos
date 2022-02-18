@@ -76,5 +76,12 @@ export class UsersController {
     return file;
   }
   // ---------------------------------------------------------------- //
-
+  @Post('uploads')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'avatar', maxCount: 1 },
+    { name: 'background', maxCount: 1 },
+  ]))
+  uploadFiles(@UploadedFiles() files: { avatar?: Express.Multer.File[], background?: Express.Multer.File[] }) {
+    return files;
+  }
 }
