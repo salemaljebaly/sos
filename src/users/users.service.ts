@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Param, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { Request } from 'express';
+import { json } from 'stream/consumers';
 
 @Injectable()
 export class UsersService {
@@ -61,4 +63,36 @@ export class UsersService {
   async remove(id: number) : Promise<void> {
     await this.usersRepository.delete(id);
   }
+
+   
+  /**
+ * Use this function to search in api
+ * @param search which key word used to search 
+ *
+ */
+  async searchByfirstname(search : string) {
+    if(search){
+      const users = await this.usersRepository.find({
+        firstName: Like(`%${search}%`),
+      })
+      users.map(user =>{ delete user.password;});
+      if(users.length > 0){return users;}
+      else {return {msg : "there is no result"}}
+      
+    } else {
+      return this.findAll();
+    }
+  }
+
+  async queryBuilder(alias: string) {
+    return this.usersRepository.createQueryBuilder(alias);
+}
+
+
+getUsersByFilter(search : string) {
+  // const users = this.findAll();
+  // if(search){
+  //   users = users.filter
+  // }
+}
 }
