@@ -4,8 +4,6 @@ import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { Request } from 'express';
-import { json } from 'stream/consumers';
 
 @Injectable()
 export class UsersService {
@@ -89,10 +87,4 @@ export class UsersService {
 }
 
 
-getUsersByFilter(search : string) {
-  // const users = this.findAll();
-  // if(search){
-  //   users = users.filter
-  // }
-}
 }
