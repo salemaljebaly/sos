@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsLatitude, IsLongitude, isLongitude, IsNotEmpty, IsPhoneNumber, IsString, MinLength } from "class-validator";
+import { Long } from "typeorm";
 
 export class CreateCitizenDto {
     
@@ -43,4 +44,16 @@ export class CreateCitizenDto {
     @IsBoolean()
     @ApiProperty({type: Boolean, description: 'isActive'})
     isActive: boolean;
+
+    @IsString()
+    @ApiProperty({type: String, description: 'city'})
+    city : string
+
+    @IsLongitude()
+    @ApiProperty({type: String, description: 'longitude'})
+    longitude: string
+
+    @IsLatitude()
+    @ApiProperty({type: String, description: 'latitude'})
+    latitude: string
 }
