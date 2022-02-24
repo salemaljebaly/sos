@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CitizensService } from './citizens.service';
 import { CreateCitizenDto } from './dto/create-citizen.dto';
 import { UpdateCitizenDto } from './dto/update-citizen.dto';
 import { Response } from 'express';
 import { AR } from 'src/locale/ar';
+import { JwtAuthGuard } from 'src/auth/jwt.auth.gaurd';
 
 @ApiTags('Citizens')
 @Controller('citizens')
@@ -17,6 +18,8 @@ export class CitizensController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   findAll() {
     return this.citizensService.findAll();
   }
