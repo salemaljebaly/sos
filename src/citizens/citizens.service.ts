@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateCitizenDto } from './dto/create-citizen.dto';
 import { UpdateCitizenDto } from './dto/update-citizen.dto';
+import { Citizen } from './entities/citizen.entity';
 
 @Injectable()
 export class CitizensService {
-  create(createCitizenDto: CreateCitizenDto) {
-    return 'This action adds a new citizen';
+  constructor(
+    @InjectRepository(Citizen)
+    private citizenRepository : Repository<Citizen>
+  ){}
+  async create(createCitizenDto: CreateCitizenDto) {
+    const citizen = this.citizenRepository.create(createCitizenDto);
+    await citizen.save();
+    
+    // use delete to hide password from response
+    delete citizen.password;
+    return citizen;
   }
 
   findAll() {
