@@ -1,16 +1,25 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { CitizensService } from './citizens.service';
 import { CreateCitizenDto } from './dto/create-citizen.dto';
 import { UpdateCitizenDto } from './dto/update-citizen.dto';
 import { Response } from 'express';
 import { AR } from 'src/locale/ar';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.gaurd';
+import { CitizenLoginDto } from './dto/citizen-login.dto';
 
 @ApiTags('Citizens')
 @Controller('citizens')
 export class CitizensController {
   constructor(private readonly citizensService: CitizensService) {}
+
+  @Post('auth')
+  @ApiCreatedResponse({description: AR.user_login})
+  @ApiUnauthorizedResponse({description: AR.wrong_email_or_password})
+  async login(@Body() citizenLoginDto: CitizenLoginDto) {
+    return this.citizensService.login(citizenLoginDto);
+  }
+
 
   @Post()
   create(@Body() createCitizenDto: CreateCitizenDto) {
