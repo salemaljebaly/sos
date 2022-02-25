@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { CitizensModule } from './citizens/citizens.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { CitizensModule } from './citizens/citizens.module';
     UsersModule,
     TypeOrmModule.forRoot(),
     AuthModule,
-    CitizensModule],
+    CitizensModule,
+    ReportModule],
   controllers: [AppController],
   providers: [AppService,JwtStrategy ],
 })

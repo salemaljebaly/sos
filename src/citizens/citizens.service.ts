@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AR } from 'src/locale/ar';
 import { Repository } from 'typeorm';
 import { CitizenLoginDto } from './dto/citizen-login.dto';
 import { CreateCitizenDto } from './dto/create-citizen.dto';
@@ -61,13 +60,13 @@ export class CitizensService {
 
   // ------------------------------------------------------------------ //
   async login(citizenLoginDto: CitizenLoginDto) {
-    const user = await this.validateUser(citizenLoginDto);
+    const citizen = await this.validateUser(citizenLoginDto);
 
     const payload = {
-      userId: user.id,
-      username: user.username,
-      firstname: user.firstName,
-      lastname: user.lastName,
+      userId: citizen.id,
+      username: citizen.username,
+      firstname: citizen.firstName,
+      lastname: citizen.lastName,
     };
 
     return {
@@ -79,12 +78,12 @@ export class CitizensService {
   async validateUser(citizenLoginDto: CitizenLoginDto): Promise<Citizen> {
     const { username, password } = citizenLoginDto;
 
-    const user = await this.findByUserName(username);
-    if (!(await user?.validatePassword(password))) {
+    const citizen = await this.findByUserName(username);
+    if (!(await citizen?.validatePassword(password))) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    return citizen;
   }
   // ------------------------------------------------------------------ //
 }
