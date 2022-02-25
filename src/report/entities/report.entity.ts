@@ -8,6 +8,9 @@ export class Report extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
   
+    @Column()
+    desc: string;
+    
     @Column({ type: "enum", enum: ReportType, default: ReportType.Ambulance })
     type: string;
 
@@ -38,6 +41,5 @@ export class Report extends BaseEntity{
 
     // OneToMany relation ship between Citizen and Report
     @ManyToOne(() => Citizen, (reporter: Citizen) => reporter.report)
-    @Column()
     public reporter : Citizen
 }
