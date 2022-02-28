@@ -1,8 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsLatitude, IsLongitude, IsNotEmpty, IsString } from "class-validator";
+import { Citizen } from "src/citizens/entities/citizen.entity";
 import { ReportState, ReportType } from "../enums/reporttype";
 
 export class CreateReportDto {
+    
+    @IsString()
+    @ApiProperty({type: String, description: 'desc'})
+    desc: string
     
     @IsString()
     @IsEnum(ReportType)
@@ -11,9 +16,6 @@ export class CreateReportDto {
     type: string;
     
     
-    @IsLongitude()
-    @ApiProperty({type: String, description: 'desc'})
-    desc: string
 
     @IsString()
     @IsEnum(ReportState)
@@ -29,4 +31,7 @@ export class CreateReportDto {
     @IsLatitude()
     @ApiProperty({type: String, description: 'latitude'})
     latitude: string
+
+
+    reporter : Citizen
 }

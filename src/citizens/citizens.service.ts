@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { rmSync } from 'fs';
 import { Repository } from 'typeorm';
 import { CitizenLoginDto } from './dto/citizen-login.dto';
 import { CreateCitizenDto } from './dto/create-citizen.dto';
@@ -61,16 +62,23 @@ export class CitizensService {
   // ------------------------------------------------------------------ //
   async login(citizenLoginDto: CitizenLoginDto) {
     const citizen = await this.validateUser(citizenLoginDto);
-
+    delete citizen.createdAt
+    delete citizen.updateAt
+    delete citizen.password
+    
     const payload = {
-      userId: citizen.id,
+      id: citizen.id,
+      firstName: citizen.firstName,
+      lastName: citizen.lastName,
       username: citizen.username,
-      firstname: citizen.firstName,
-      lastname: citizen.lastName,
+      email: citizen.email,
+      phone: citizen.phone,
+      isActive: citizen.isActive,
+      city: citizen.city      
     };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload)
     };
   }
 

@@ -23,19 +23,19 @@ export class Citizen extends BaseEntity{
     @Column()
     phone : string
     
-    @Column()
+    @Column({select : false})
     password: string;
   
     @Column({ default: true })
     isActive: boolean;
 
     // the date created
-    @Column()
+    @Column({select : false})
     @CreateDateColumn()
     createdAt: Date;
 
     // created when update record
-    @Column()
+    @Column({select : false})
     @UpdateDateColumn()
     updateAt: Date;
 
@@ -60,5 +60,5 @@ export class Citizen extends BaseEntity{
     latitude : string
 
     @OneToMany(() => Report, (report: Report) => report.reporter)
-    public report : Report;
+    report : Report[];
 }

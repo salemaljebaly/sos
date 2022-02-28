@@ -1,26 +1,53 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Citizen } from 'src/citizens/entities/citizen.entity';
+import { Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
+import { Report } from './entities/report.entity';
 
 @Injectable()
 export class ReportService {
-  create(createReportDto: CreateReportDto) {
-    return 'This action adds a new report';
+  constructor(
+    @InjectRepository(Report)
+    private reportRepository: Repository<Report>,
+  ) {}
+  async create(citizen: Citizen, createReportDto: CreateReportDto) {
+    createReportDto.reporter = citizen;
+    const report = this.reportRepository.create(createReportDto);
+    await report.save();
+
+    return report;
   }
 
+  // get all reports with current user authorized
   findAll() {
-    return `This action returns all report`;
+    return this.reportRepository.find({ relations: ['reporter'] });
   }
 
+  // get report by user id
   findOne(id: number) {
-    return `This action returns a #${id} report`;
+    return this.reportRepository.findOne({ id }, { relations: ['reporter'] });
   }
 
+  // get all reports by user id
+  findByUser(userId: number) {
+    return this.reportRepository.find({
+      where: {
+        reporter: userId,
+      },
+      relations: ['reporter'],
+    });
+  }
+
+  // update report
   update(id: number, updateReportDto: UpdateReportDto) {
-    return `This action updates a #${id} report`;
+    return this.reportRepository.update(id, updateReportDto);
   }
 
+  // remove report by id
   remove(id: number) {
-    return `This action removes a #${id} report`;
+    return this.reportRepository.delete(id);
   }
 }

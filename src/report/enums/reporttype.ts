@@ -1,11 +1,11 @@
 export enum ReportType {
-    "Fire",
-    "Ambulance",
-    "Accidant"
+    FIRE = "Fire",
+    AMBULANCE = "Ambulance",
+    ACCIDANT = "Accidant"
 }
 
 export enum ReportState {
-    "pending",
-    "processing",
-    "done"
+    PENDING = "pending",
+    PROCESSING = "processing",
+    DONE = "done"
 }

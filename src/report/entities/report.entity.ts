@@ -1,3 +1,4 @@
+import { CreateCitizenDto } from "src/citizens/dto/create-citizen.dto";
 import { Citizen } from "src/citizens/entities/citizen.entity";
 import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ReportState, ReportType } from "../enums/reporttype";
@@ -11,11 +12,11 @@ export class Report extends BaseEntity{
     @Column()
     desc: string;
     
-    @Column({ type: "enum", enum: ReportType, default: ReportType.Ambulance })
+    @Column({type: 'enum', enum: ReportType, default: ReportType.FIRE})
     type: string;
 
   
-    @Column({ type: "enum", enum: ReportState, default: ReportState.pending })
+    @Column({type: 'enum', enum: ReportState, default: ReportState.PENDING})
     state: string;
 
     // the date created
@@ -40,6 +41,6 @@ export class Report extends BaseEntity{
     // files : string
 
     // OneToMany relation ship between Citizen and Report
-    @ManyToOne(() => Citizen, (reporter: Citizen) => reporter.report)
-    public reporter : Citizen
+    @ManyToOne(() => Citizen, (citizen: Citizen) => citizen.report)
+    reporter : CreateCitizenDto
 }
