@@ -52,21 +52,22 @@ export const storage = {
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
+  // ----------------------------------------------------------------------------------- //
   constructor(private readonly usersService: UsersService) {}
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Post()
   @ApiCreatedResponse({ description: AR.user_created })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   findAll() {
     return this.usersService.findAll();
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -74,13 +75,13 @@ export class UsersController {
     console.log(id);
     return this.usersService.findOneById(+id);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Get('search/:keyword')
   async search(@Param('keyword') keyword: string) {
     console.log(keyword);
     return this.usersService.searchByfirstname(keyword);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -88,7 +89,7 @@ export class UsersController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -96,7 +97,7 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   // upload single file
   @Post('upload') 
   @ApiConsumes('multipart/form-data')
@@ -116,7 +117,7 @@ export class UsersController {
     console.log(file.path);
     return {imagePath : file.path};
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   // upload multiple images
   @Post('uploads')
   @ApiConsumes('multipart/form-data')
@@ -150,10 +151,11 @@ export class UsersController {
   ) {
     return files;
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   // read images
   @Get('upload/:imgpath')
   seeUploadedFile(@Param('imgpath') image, @Res() res): any {
     return res.sendFile(join(process.cwd(), 'uploads/profileimages/' + image));
   }
+  // ----------------------------------------------------------------------------------- //
 }

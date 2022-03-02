@@ -9,3 +9,10 @@ export enum ReportState {
     PROCESSING = "processing",
     DONE = "done"
 }
+
+export enum FileTypes  {
+    JPEG = "jpg",
+    png = "png",
+    MP3 = "mp3",
+    MP$ = "mp4"
+}

@@ -14,6 +14,7 @@ import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.gaurd';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('report')
 export class ReportController {
@@ -27,15 +28,15 @@ export class ReportController {
     return this.reportService.create(citizen, createReportDto);
   }
 
-  //TODO fix route bug
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get('user')
   getByUser( @Request() req) {
-    console.log(req.user)
     return this.reportService.findByUser(req.user.id)
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get()
   findAll() {
     // req.user
@@ -44,18 +45,21 @@ export class ReportController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reportService.findOne(+id);
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateReportDto: UpdateReportDto) {
     return this.reportService.update(+id, updateReportDto);
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.reportService.remove(+id);

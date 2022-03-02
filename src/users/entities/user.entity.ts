@@ -12,10 +12,10 @@ export class User extends BaseEntity {
     @Column()
     lastName: string;
   
-    @Column()
+    @Column({unique : true})
     username: string;
   
-    @Column()
+    @Column({unique : true})
     email : string
     
     @Column()
@@ -42,6 +42,7 @@ export class User extends BaseEntity {
 
     // check the password entered is correct
     async validatePassword(password: string) : Promise<boolean>{
+        console.log(this.password)
         return bcrypt.compare(password, this.password);
     }
 }

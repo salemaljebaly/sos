@@ -23,20 +23,20 @@ export class Citizen extends BaseEntity{
     @Column()
     phone : string
     
-    @Column({select : false})
+    @Column()
     password: string;
   
-    @Column({ default: true })
+    @Column()
     isActive: boolean;
 
     // the date created
-    @Column({select : false})
+    @Column()
     @CreateDateColumn()
     createdAt: Date;
 
     // created when update record
     @Column({select : false})
-    @UpdateDateColumn()
+    @UpdateDateColumn({select : false})
     updateAt: Date;
 
     // encrypt the password before inserted in database
@@ -50,6 +50,7 @@ export class Citizen extends BaseEntity{
         return bcrypt.compare(password, this.password);
     }
 
+    
     @Column()
     city : string
 

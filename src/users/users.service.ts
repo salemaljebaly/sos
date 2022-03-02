@@ -1,4 +1,4 @@
-import { Injectable, Param, Req } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Param, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,8 +15,9 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
-    await user.save();
-    
+    if(await this.findByUserName(createUserDto.username) == undefined){
+      await user.save();
+    }
     // use delete to hide password from response
     delete user.password;
     return user;

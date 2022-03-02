@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Citizen } from 'src/citizens/entities/citizen.entity';
 import { Repository } from 'typeorm';
@@ -9,10 +8,12 @@ import { Report } from './entities/report.entity';
 
 @Injectable()
 export class ReportService {
+  // ----------------------------------------------------------------------------------- //
   constructor(
     @InjectRepository(Report)
     private reportRepository: Repository<Report>,
   ) {}
+  // ----------------------------------------------------------------------------------- //
   async create(citizen: Citizen, createReportDto: CreateReportDto) {
     createReportDto.reporter = citizen;
     const report = this.reportRepository.create(createReportDto);
@@ -20,34 +21,39 @@ export class ReportService {
 
     return report;
   }
-
+  // ----------------------------------------------------------------------------------- //
   // get all reports with current user authorized
   findAll() {
     return this.reportRepository.find({ relations: ['reporter'] });
   }
-
+  // ----------------------------------------------------------------------------------- //
   // get report by user id
   findOne(id: number) {
     return this.reportRepository.findOne({ id }, { relations: ['reporter'] });
   }
-
+  // ----------------------------------------------------------------------------------- //
   // get all reports by user id
-  findByUser(userId: number) {
-    return this.reportRepository.find({
+  async findByUser(userId: number) {
+    const reports = await this.reportRepository.find({
       where: {
         reporter: userId,
       },
-      relations: ['reporter'],
+      relations: ['reporter']
     });
+    reports.map((report) => {
+      delete report.reporter.password
+    })
+    return reports;
   }
-
+  // ----------------------------------------------------------------------------------- //
   // update report
   update(id: number, updateReportDto: UpdateReportDto) {
     return this.reportRepository.update(id, updateReportDto);
   }
-
+  // ----------------------------------------------------------------------------------- //
   // remove report by id
   remove(id: number) {
     return this.reportRepository.delete(id);
   }
+  // ----------------------------------------------------------------------------------- //
 }
