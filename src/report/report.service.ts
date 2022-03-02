@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { Report } from './entities/report.entity';
+import { FileTypes } from './enums/reporttype';
 
 @Injectable()
 export class ReportService {
@@ -31,6 +32,10 @@ export class ReportService {
   findOne(id: number) {
     return this.reportRepository.findOne({ id }, { relations: ['reporter'] });
   }
+
+  findOneReport(id: number){
+    return this.reportRepository.findOne(id);
+  }
   // ----------------------------------------------------------------------------------- //
   // get all reports by user id
   async findByUser(userId: number) {
@@ -50,6 +55,14 @@ export class ReportService {
   update(id: number, updateReportDto: UpdateReportDto) {
     return this.reportRepository.update(id, updateReportDto);
   }
+
+  async uploadFile(id: number, filetype: string, reportFilePath : string) {
+    const currentReprot  = await this.findOneReport(id)
+    currentReprot.fileType = filetype;
+    currentReprot.reportFilePath = reportFilePath;
+    return this.reportRepository.save(currentReprot)
+  }
+
   // ----------------------------------------------------------------------------------- //
   // remove report by id
   remove(id: number) {

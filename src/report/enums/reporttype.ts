@@ -12,7 +12,7 @@ export enum ReportState {
 
 export enum FileTypes  {
     JPEG = "jpg",
-    png = "png",
+    PNG = "png",
     MP3 = "mp3",
-    MP$ = "mp4"
+    MP4 = "mp4"
 }

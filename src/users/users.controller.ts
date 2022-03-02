@@ -114,7 +114,7 @@ export class UsersController {
   })
   @UseInterceptors(FileInterceptor('file',storage))
   uploadFile(@UploadedFile() file ) {
-    console.log(file.path);
+    console.log(file);
     return {imagePath : file.path};
   }
   // ----------------------------------------------------------------------------------- //

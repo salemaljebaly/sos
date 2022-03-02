@@ -35,14 +35,12 @@ export class Report extends BaseEntity{
     @Column()
     latitude : string
 
-    //TODO add new files entity in app and make oneToMany relation
-    // @Column()
-    // files : string
     // report attach
     @Column({nullable : true})
     reportFilePath : string
 
-    @Column({type: 'enum', enum: FileTypes, nullable: true})
+    // report file type
+    @Column({ nullable: true})
     fileType: string;
 
     // OneToMany relation ship between Citizen and Report
