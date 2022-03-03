@@ -1,5 +1,6 @@
-import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, Long, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, Long, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcryptjs';
+import { Report } from "src/report/entities/report.entity";
 
 @Entity()
 export class Citizen extends BaseEntity{
@@ -25,7 +26,7 @@ export class Citizen extends BaseEntity{
     @Column()
     password: string;
   
-    @Column({ default: true })
+    @Column()
     isActive: boolean;
 
     // the date created
@@ -34,8 +35,8 @@ export class Citizen extends BaseEntity{
     createdAt: Date;
 
     // created when update record
-    @Column()
-    @UpdateDateColumn()
+    @Column({select : false})
+    @UpdateDateColumn({select : false})
     updateAt: Date;
 
     // encrypt the password before inserted in database
@@ -49,6 +50,7 @@ export class Citizen extends BaseEntity{
         return bcrypt.compare(password, this.password);
     }
 
+    
     @Column()
     city : string
 
@@ -57,4 +59,7 @@ export class Citizen extends BaseEntity{
 
     @Column()
     latitude : string
+
+    @OneToMany(() => Report, (report: Report) => report.reporter)
+    report : Report[];
 }

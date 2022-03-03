@@ -34,39 +34,40 @@ import { diskStorage } from 'multer';
 import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
-
+// ----------------------------------------------------------------------------------- //
 export const storage = {
   storage: diskStorage({
-      destination: './uploads/profileimages',
-      filename: (req, file, cb) => {
-          // const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-          const filename: string = new Date().toISOString().slice(0, 10) + "_" + uuidv4();
-          const extension: string = path.parse(file.originalname).ext;
+    destination: './uploads/profileimages',
+    filename: (req, file, cb) => {
+      // const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+      const filename: string =
+        new Date().toISOString().slice(0, 10) + '_' + uuidv4();
+      const extension: string = path.parse(file.originalname).ext;
 
-          cb(null, `${filename}${extension}`)
-      }
-  })
-
-}
-
+      cb(null, `${filename}${extension}`);
+    },
+  }),
+};
+// ----------------------------------------------------------------------------------- //
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
+  // ----------------------------------------------------------------------------------- //
   constructor(private readonly usersService: UsersService) {}
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Post()
   @ApiCreatedResponse({ description: AR.user_created })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   findAll() {
     return this.usersService.findAll();
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -74,13 +75,13 @@ export class UsersController {
     console.log(id);
     return this.usersService.findOneById(+id);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Get('search/:keyword')
   async search(@Param('keyword') keyword: string) {
     console.log(keyword);
     return this.usersService.searchByfirstname(keyword);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -88,7 +89,7 @@ export class UsersController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -96,9 +97,9 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   // upload single file
-  @Post('upload') 
+  @Post('upload')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -111,12 +112,12 @@ export class UsersController {
       },
     },
   })
-  @UseInterceptors(FileInterceptor('file',storage))
-  uploadFile(@UploadedFile() file ) {
-    console.log(file.path);
-    return {imagePath : file.path};
+  @UseInterceptors(FileInterceptor('file', storage))
+  uploadFile(@UploadedFile() file) {
+    console.log(file);
+    return { imagePath: file.path };
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   // upload multiple images
   @Post('uploads')
   @ApiConsumes('multipart/form-data')
@@ -136,10 +137,13 @@ export class UsersController {
     },
   })
   @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'avatar', maxCount: 1 },
-      { name: 'background', maxCount: 1 },
-    ], storage),
+    FileFieldsInterceptor(
+      [
+        { name: 'avatar', maxCount: 1 },
+        { name: 'background', maxCount: 1 },
+      ],
+      storage,
+    ),
   )
   uploadFiles(
     @UploadedFiles()
@@ -150,10 +154,11 @@ export class UsersController {
   ) {
     return files;
   }
-  // ---------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
   // read images
   @Get('upload/:imgpath')
   seeUploadedFile(@Param('imgpath') image, @Res() res): any {
     return res.sendFile(join(process.cwd(), 'uploads/profileimages/' + image));
   }
+  // ----------------------------------------------------------------------------------- //
 }
