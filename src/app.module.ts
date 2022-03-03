@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { CitizensModule } from './citizens/citizens.module';
 import { ReportModule } from './report/report.module';
+import { PoliceOfficeModule } from './police-office/police-office.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ReportModule } from './report/report.module';
     TypeOrmModule.forRoot(),
     AuthModule,
     CitizensModule,
-    ReportModule],
+    ReportModule,
+    PoliceOfficeModule],
   controllers: [AppController],
   providers: [AppService,JwtStrategy ],
 })
