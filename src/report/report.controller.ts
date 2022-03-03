@@ -16,7 +16,14 @@ import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.gaurd';
-import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiParam,
+  ApiProduces,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import path = require('path');
@@ -24,6 +31,7 @@ import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { FileTypes } from './enums/reporttype';
 import fs = require('fs');
+import { AR } from 'src/locale/ar';
 // ----------------------------------------------------------------------------------- //
 export const storage = {
   storage: diskStorage({
@@ -31,17 +39,21 @@ export const storage = {
       let fileType: string;
       fileType = path.parse(file.originalname).ext.slice(1).trim();
       // check if file type exists in file type
-      for (fileType in FileTypes) {
-        fileType = path.parse(file.originalname).ext.slice(1);
-      }
-      // check if the dir name is exists
-      if (!fs.existsSync('./uploads/files/' + fileType)) {
-        fs.mkdirSync('./uploads/files/' + fileType);
+      for (const type in FileTypes) {
+        // check if type in enum
+        if (FileTypes[type] == fileType) {
+          // check if the dir name is exists
+          if (!fs.existsSync('./uploads/files/' + fileType)) {
+            fs.mkdirSync('./uploads/files/' + fileType);
+          }
+        } else {
+          console.log('false you cant add' + FileTypes[type]);
+          //TODO return HTTP with json
+        }
       }
       cb(null, './uploads/files/' + fileType + '/');
     },
     filename: (req, file, cb) => {
-      // const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
       const filename: string =
         new Date().toISOString().slice(0, 10) + '_' + uuidv4();
       const extension: string = path.parse(file.originalname).ext;
@@ -57,8 +69,10 @@ export class ReportController {
   // ----------------------------------------------------------------------------------- //
   constructor(private readonly reportService: ReportService) {}
   // ----------------------------------------------------------------------------------- //
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ description: AR.report_created })
   create(@Body() createReportDto: CreateReportDto, @Request() req) {
     // get the current citizen data
     const citizen = req.user;
@@ -104,7 +118,8 @@ export class ReportController {
   // ----------------------------------------------------------------------------------- //
   // upload
   // upload single file
-  @Post('upload/:id')
+  //TODO fix param id in post swagger
+  @Post('upload/:reportId')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -117,10 +132,11 @@ export class ReportController {
       },
     },
   })
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  // @ApiParam({name: "ٌreportId"})
   @UseInterceptors(FileInterceptor('file', storage))
-  async uploadFile(@UploadedFile() file, @Param('id') reportId) {
+  async uploadFile(@Param('reportId') reportId, @UploadedFile() file) {
     const currentReport = await this.reportService.findOneReport(reportId);
     // delete old file from files
     if (currentReport.reportFilePath != null) {
@@ -139,14 +155,17 @@ export class ReportController {
   }
   // ----------------------------------------------------------------------------------- //
   // read images
-  @Get('upload/:id/')
-  async seeUploadedFile(
-    @Param('id') id,
-    @Res() res,
-  ): Promise<any> {
+  @Get('upload/view/:reportId/')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  @ApiParam({ name: 'reportId' })
+  async seeUploadedFile(@Param('reportId') id, @Res() res): Promise<any> {
     const currentReport = await this.reportService.findOneReport(id);
     return res.sendFile(
-      join(process.cwd(), `./uploads/files/${currentReport.fileType}/${currentReport.reportFilePath}`),
+      join(
+        process.cwd(),
+        `./uploads/files/${currentReport.fileType}/${currentReport.reportFilePath}`,
+      ),
     );
   }
   // ----------------------------------------------------------------------------------- //

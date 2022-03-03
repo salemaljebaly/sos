@@ -16,5 +16,9 @@ export const AR = {
     citizen_created   : "تمت اضافة مواطن جديد للنظام",
     // setting 
     no_email_found: "لايوجد ايميل  في النظام",
+    // reports
+    report_created: "تم انشاء بلاغ",
+    report_update : "تم تحديث حالة البلاغ",
+    report_deleted: "تم حذف البلاغ",
     
 }
