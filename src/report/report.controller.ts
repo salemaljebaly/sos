@@ -8,7 +8,6 @@ import {
   Delete,
   Request,
   UseGuards,
-  Put,
   UseInterceptors,
   UploadedFile,
   Res,
@@ -24,20 +23,34 @@ import path = require('path');
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { FileTypes } from './enums/reporttype';
-
+import fs = require('fs');
+// ----------------------------------------------------------------------------------- //
 export const storage = {
   storage: diskStorage({
-      destination: './uploads/files',
-      filename: (req, file, cb) => {
-          // const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-          const filename: string = new Date().toISOString().slice(0, 10) + "_" + uuidv4();
-          const extension: string = path.parse(file.originalname).ext;
-
-          cb(null, `${filename}${extension}`)
+    destination: function (req, file, cb) {
+      let fileType: string;
+      fileType = path.parse(file.originalname).ext.slice(1).trim();
+      // check if file type exists in file type
+      for (fileType in FileTypes) {
+        fileType = path.parse(file.originalname).ext.slice(1);
       }
-  })
+      // check if the dir name is exists
+      if (!fs.existsSync('./uploads/files/' + fileType)) {
+        fs.mkdirSync('./uploads/files/' + fileType);
+      }
+      cb(null, './uploads/files/' + fileType + '/');
+    },
+    filename: (req, file, cb) => {
+      // const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+      const filename: string =
+        new Date().toISOString().slice(0, 10) + '_' + uuidv4();
+      const extension: string = path.parse(file.originalname).ext;
 
-}
+      cb(null, `${filename}${extension}`);
+    },
+  }),
+};
+// ----------------------------------------------------------------------------------- //
 @Controller('report')
 export class ReportController {
   public static fileType = FileTypes.PNG;
@@ -104,26 +117,37 @@ export class ReportController {
       },
     },
   })
-  
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('file', storage))
-  uploadFile(@UploadedFile() file, @Param('id') reportId) {
-    console.log(reportId);
-    console.log(file.filename);
+  async uploadFile(@UploadedFile() file, @Param('id') reportId) {
+    const currentReport = await this.reportService.findOneReport(reportId);
+    // delete old file from files
+    if (currentReport.reportFilePath != null) {
+      fs.unlink(
+        `./uploads/files/${currentReport.fileType}/${currentReport.reportFilePath}`,
+        function (err) {
+          if (err) return console.log(err);
+          console.log('file deleted successfully');
+        },
+      );
+    }
+    // upload new file
     const extension: string = path.parse(file.originalname).ext.slice(1);
-    console.log(extension);
-    this.reportService.uploadFile(reportId, extension, file.filename)
+    this.reportService.uploadFile(reportId, extension, file.filename);
     return { imagePath: file.path };
   }
   // ----------------------------------------------------------------------------------- //
   // read images
-  @Get('upload/:id/:imgpath')
-  async seeUploadedFile(@Param('id') id,@Param('imgpath') image, @Res() res): Promise<any> {
+  @Get('upload/:id/')
+  async seeUploadedFile(
+    @Param('id') id,
+    @Res() res,
+  ): Promise<any> {
     const currentReport = await this.reportService.findOneReport(id);
-    
-    return res.sendFile(join(process.cwd(), 'uploads/files/' + currentReport.reportFilePath));
+    return res.sendFile(
+      join(process.cwd(), `./uploads/files/${currentReport.fileType}/${currentReport.reportFilePath}`),
+    );
   }
   // ----------------------------------------------------------------------------------- //
 }
-

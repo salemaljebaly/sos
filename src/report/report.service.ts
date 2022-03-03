@@ -45,6 +45,7 @@ export class ReportService {
       },
       relations: ['reporter']
     });
+    // delete password from response
     reports.map((report) => {
       delete report.reporter.password
     })
@@ -55,14 +56,13 @@ export class ReportService {
   update(id: number, updateReportDto: UpdateReportDto) {
     return this.reportRepository.update(id, updateReportDto);
   }
-
+  // ----------------------------------------------------------------------------------- //
   async uploadFile(id: number, filetype: string, reportFilePath : string) {
     const currentReprot  = await this.findOneReport(id)
     currentReprot.fileType = filetype;
     currentReprot.reportFilePath = reportFilePath;
     return this.reportRepository.save(currentReprot)
   }
-
   // ----------------------------------------------------------------------------------- //
   // remove report by id
   remove(id: number) {
