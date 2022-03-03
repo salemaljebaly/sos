@@ -1,37 +1,29 @@
 import {
   BaseEntity,
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
 
 @Entity()
-export class User extends BaseEntity {
+export class PoliceOffice  extends BaseEntity{
   // ----------------------------------------------------------------------------------- //
   @PrimaryGeneratedColumn()
   id: number;
   // ----------------------------------------------------------------------------------- //
   @Column()
-  firstName: string;
+  office_name: string;
   // ----------------------------------------------------------------------------------- //
   @Column()
-  lastName: string;
-  // ----------------------------------------------------------------------------------- //
-  @Column({ unique: true })
-  username: string;
-  // ----------------------------------------------------------------------------------- //
-  @Column({ unique: true })
-  email: string;
+  office_city: string;
   // ----------------------------------------------------------------------------------- //
   @Column()
-  password: string;
+  longitude: string;
   // ----------------------------------------------------------------------------------- //
-  @Column({ default: true })
-  isActive: boolean;
+  @Column()
+  latitude: string;
   // ----------------------------------------------------------------------------------- //
   // the date created
   @Column()
@@ -42,16 +34,5 @@ export class User extends BaseEntity {
   @Column()
   @UpdateDateColumn()
   updateAt: Date;
-  // ----------------------------------------------------------------------------------- //
-  // encrypt the password before inserted in database
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 8);
-  }
-  // ----------------------------------------------------------------------------------- //
-  // check the password entered is correct
-  async validatePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
-  }
   // ----------------------------------------------------------------------------------- //
 }
