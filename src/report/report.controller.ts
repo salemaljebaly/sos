@@ -11,6 +11,8 @@ import {
   UseInterceptors,
   UploadedFile,
   Res,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -48,7 +50,6 @@ export const storage = {
           }
         } else {
           console.log('false you cant add' + FileTypes[type]);
-          //TODO return HTTP with json
         }
       }
       cb(null, './uploads/files/' + fileType + '/');
