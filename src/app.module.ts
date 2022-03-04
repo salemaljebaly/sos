@@ -9,6 +9,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { CitizensModule } from './citizens/citizens.module';
 import { ReportModule } from './report/report.module';
 import { PoliceOfficeModule } from './police-office/police-office.module';
+import { AboutModule } from './about/about.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { PoliceOfficeModule } from './police-office/police-office.module';
     AuthModule,
     CitizensModule,
     ReportModule,
-    PoliceOfficeModule],
+    PoliceOfficeModule,
+    AboutModule],
   controllers: [AppController],
   providers: [AppService,JwtStrategy ],
 })
