@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { AR } from 'src/locale/ar';
+import { Like, Repository } from 'typeorm';
 import { CreatePoliceOfficeDto } from './dto/create-police-office.dto';
 import { UpdatePoliceOfficeDto } from './dto/update-police-office.dto';
 import { PoliceOffice } from './entities/police-office.entity';
@@ -38,6 +39,28 @@ export class PoliceOfficeService {
   // remove office
   remove(id: number) {
     return this.policeOfficeRepository.delete(id);
+  }
+  // ----------------------------------------------------------------------------------- //
+  /**
+   * Use this function to search in api
+   * @param search which key word used to search
+   *
+   */
+  async searchByPoliceName(office_name: string, office_city: string) {
+    if (office_name) {
+      const police_office = await this.policeOfficeRepository.find({
+        office_name: Like(`%${office_name}%`),
+        office_city : Like(`%${office_city}%`),
+      });
+      
+      if (police_office.length > 0) {
+        return police_office;
+      } else {
+        return { msg: AR.no_result };
+      }
+    } else {
+      return this.findAll();
+    }
   }
   // ----------------------------------------------------------------------------------- //
 }
