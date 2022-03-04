@@ -14,7 +14,6 @@ import { UpdatePoliceOfficeDto } from './dto/update-police-office.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.gaurd';
 
-
 @ApiTags('Police Office')
 @Controller('police-office')
 export class PoliceOfficeController {
@@ -44,6 +43,14 @@ export class PoliceOfficeController {
   // ----------------------------------------------------------------------------------- //
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @Get('search/:office_name/:office_city')
+  async search(@Param('office_name') office_name: string, @Param('office_city') office_city: string) {
+    console.log(office_name + " : " + office_city);
+    return this.policeOfficeService.searchByPoliceName(office_name, office_city);
+  }
+  // ----------------------------------------------------------------------------------- //
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -51,7 +58,7 @@ export class PoliceOfficeController {
   ) {
     return this.policeOfficeService.update(+id, updatePoliceOfficeDto);
   }
-  // ----------------------------------------------------------------------------------- //  
+  // ----------------------------------------------------------------------------------- //
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Delete(':id')

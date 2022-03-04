@@ -20,5 +20,7 @@ export const AR = {
     report_created: "تم انشاء بلاغ",
     report_update : "تم تحديث حالة البلاغ",
     report_deleted: "تم حذف البلاغ",
+    // general messages
+    no_result : 'لاتوجد نتائج   '
     
 }
