@@ -25,6 +25,7 @@ import {
   ApiCreatedResponse,
   ApiParam,
   ApiProduces,
+  ApiTags,
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -64,6 +65,7 @@ export const storage = {
   }),
 };
 // ----------------------------------------------------------------------------------- //
+@ApiTags('Reports')
 @Controller('report')
 export class ReportController {
   public static fileType = FileTypes.PNG;
