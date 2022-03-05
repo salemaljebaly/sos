@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Role } from 'src/auth/enum/role.enum';
 
 @Entity()
 export class User extends BaseEntity {
@@ -53,5 +54,12 @@ export class User extends BaseEntity {
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
   }
+  // ----------------------------------------------------------------------------------- //
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.User
+  })
+  role: Role
   // ----------------------------------------------------------------------------------- //
 }

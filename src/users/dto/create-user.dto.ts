@@ -2,10 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsString,
   MinLength,
 } from 'class-validator';
+import { Role } from 'src/auth/enum/role.enum';
 
 export class CreateUserDto {
   // ----------------------------------------------------------------------------------- //
@@ -41,4 +43,12 @@ export class CreateUserDto {
   @ApiProperty({ type: Boolean, description: 'isActive' })
   isActive: boolean;
   // ----------------------------------------------------------------------------------- //
+  @IsString()
+  @IsEnum(Role)
+  @IsNotEmpty()
+  @ApiProperty({type: String, enum: Role, default : Role.User})
+  role: Role;
+  // ----------------------------------------------------------------------------------- //
+
+
 }

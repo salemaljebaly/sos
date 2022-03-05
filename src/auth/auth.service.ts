@@ -20,8 +20,9 @@ export class AuthService {
       username: user.username,
       firstname: user.firstName,
       lastname: user.lastName,
+      role : user.role
     };
-    
+    console.log(this.jwtService.sign(payload))
     return {
       access_token: this.jwtService.sign(payload),
     };
