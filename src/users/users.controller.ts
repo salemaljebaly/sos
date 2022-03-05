@@ -34,6 +34,9 @@ import { diskStorage } from 'multer';
 import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Role } from 'src/auth/enum/role.enum';
 // ----------------------------------------------------------------------------------- //
 export const storage = {
   storage: diskStorage({
@@ -62,7 +65,10 @@ export class UsersController {
   }
   // ----------------------------------------------------------------------------------- //
   @Get()
-  @UseGuards(JwtAuthGuard)
+  //TODO fix authorize
+  @Roles( Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   findAll() {
     return this.usersService.findAll();
