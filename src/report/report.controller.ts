@@ -41,13 +41,15 @@ export const storage = {
     destination: function (req, file, cb) {
       let fileType: string;
       fileType = path.parse(file.originalname).ext.slice(1).trim();
+      
       // check if file type exists in file type
       for (const type in FileTypes) {
         // check if type in enum
         if (FileTypes[type] == fileType) {
+          console.log(fileType);
           // check if the dir name is exists
           if (!fs.existsSync('./uploads/files/' + fileType)) {
-            fs.mkdirSync('./uploads/files/' + fileType);
+            fs.mkdirSync('./uploads/files/' + fileType, { recursive: true });
           }
         } else {
           console.log('false you cant add' + FileTypes[type]);
@@ -141,6 +143,7 @@ export class ReportController {
   @UseInterceptors(FileInterceptor('file', storage))
   async uploadFile(@Param('reportId') reportId, @UploadedFile() file) {
     const currentReport = await this.reportService.findOneReport(reportId);
+    console.log({currentReport});
     // delete old file from files
     if (currentReport.reportFilePath != null) {
       fs.unlink(
@@ -158,7 +161,7 @@ export class ReportController {
   }
   // ----------------------------------------------------------------------------------- //
   // read images
-  @Get('upload/view/:reportId/')
+  @Get('upload/view/:reportId')
   // @UseGuards(JwtAuthGuard)
   // @ApiBearerAuth()
   @ApiParam({ name: 'reportId' })
