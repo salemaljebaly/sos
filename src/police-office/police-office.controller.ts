@@ -36,6 +36,13 @@ export class PoliceOfficeController {
   // ----------------------------------------------------------------------------------- //
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @Get('count')
+  countAllPoliceOffices(){
+    return this.policeOfficeService.countAllPoliceOffices();
+  }
+  // ----------------------------------------------------------------------------------- //
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.policeOfficeService.findOne(+id);

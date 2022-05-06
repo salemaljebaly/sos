@@ -100,6 +100,15 @@ export class ReportController {
     // return "test"
   }
   // ----------------------------------------------------------------------------------- //
+  @Get('count')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  countAllReports() {
+    // req.user
+    return this.reportService.countAllReports();
+    // return "test"
+  }
+  // ----------------------------------------------------------------------------------- //
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

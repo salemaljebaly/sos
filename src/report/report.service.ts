@@ -69,4 +69,8 @@ export class ReportService {
     return this.reportRepository.delete(id);
   }
   // ----------------------------------------------------------------------------------- //
+  countAllReports(){
+    return this.reportRepository.count();
+  }
+  // ----------------------------------------------------------------------------------- //
 }

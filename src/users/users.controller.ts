@@ -65,13 +65,19 @@ export class UsersController {
   }
   // ----------------------------------------------------------------------------------- //
   @Get()
-  //TODO fix authorize
   @Roles( Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   findAll() {
     return this.usersService.findAll();
+  }
+  // ----------------------------------------------------------------------------------- //
+  @Get('count')
+  @Roles( Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  countAllUser() {
+    return this.usersService.countAllReports();
   }
   // ----------------------------------------------------------------------------------- //
   @Get(':id')

@@ -94,4 +94,8 @@ export class UsersService {
     return this.usersRepository.createQueryBuilder(alias);
   }
   // ----------------------------------------------------------------------------------- //
+  countAllReports(){
+    return this.usersRepository.count();
+  }
+  // ----------------------------------------------------------------------------------- //
 }

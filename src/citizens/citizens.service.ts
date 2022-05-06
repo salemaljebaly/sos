@@ -96,4 +96,8 @@ export class CitizensService {
     return citizen;
   }
   // ----------------------------------------------------------------------------------- //
+  countAllCitizen() {
+    return this.citizenRepository.count();
+  }
+
 }
