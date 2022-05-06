@@ -51,7 +51,8 @@ export class CitizensService {
   }
   // ----------------------------------------------------------------------------------- //
   async remove(id: number) {
-    return await this.citizenRepository.delete(id);
+    await this.citizenRepository.delete(id);
+    return id;
   }
   // ----------------------------------------------------------------------------------- //
   async findByUserName(username: string) {

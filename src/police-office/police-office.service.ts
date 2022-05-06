@@ -38,7 +38,8 @@ export class PoliceOfficeService {
   // ----------------------------------------------------------------------------------- //
   // remove office
   remove(id: number) {
-    return this.policeOfficeRepository.delete(id);
+    this.policeOfficeRepository.delete(id);
+    return id;
   }
   // ----------------------------------------------------------------------------------- //
   /**

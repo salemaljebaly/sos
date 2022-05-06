@@ -66,7 +66,8 @@ export class ReportService {
   // ----------------------------------------------------------------------------------- //
   // remove report by id
   remove(id: number) {
-    return this.reportRepository.delete(id);
+    this.reportRepository.delete(id);
+    return id;
   }
   // ----------------------------------------------------------------------------------- //
   countAllReports(){

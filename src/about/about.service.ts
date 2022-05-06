@@ -35,7 +35,8 @@ export class AboutService {
   // ----------------------------------------------------------------------------------- //
 
   remove(id: number) {
-    return this.aboutRepository.delete(id);
+    this.aboutRepository.delete(id);
+    return id;
   }
   // ----------------------------------------------------------------------------------- //
 }
