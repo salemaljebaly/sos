@@ -1,5 +1,7 @@
 import { CreateCitizenDto } from 'src/citizens/dto/create-citizen.dto';
 import { Citizen } from 'src/citizens/entities/citizen.entity';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { User } from 'src/users/entities/user.entity';
 import {
   BaseEntity,
   BeforeInsert,
@@ -54,5 +56,9 @@ export class Report extends BaseEntity {
   // OneToMany relation ship between Citizen and Report
   @ManyToOne(() => Citizen, (citizen: Citizen) => citizen.report)
   reporter: CreateCitizenDto;
+  // ----------------------------------------------------------------------------------- //
+  // OneToMany relation ship between Citizen and Report
+  @ManyToOne(() => User, (user: User) => user.report)
+  user: CreateUserDto;
   // ----------------------------------------------------------------------------------- //
 }

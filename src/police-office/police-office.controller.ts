@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { PoliceOfficeService } from './police-office.service';
 import { CreatePoliceOfficeDto } from './dto/create-police-office.dto';
@@ -23,8 +24,8 @@ export class PoliceOfficeController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
-  create(@Body() createPoliceOfficeDto: CreatePoliceOfficeDto) {
-    return this.policeOfficeService.create(createPoliceOfficeDto);
+  create(@Body() createPoliceOfficeDto: CreatePoliceOfficeDto, @Request() req) {
+    return this.policeOfficeService.create(createPoliceOfficeDto, req.user);
   }
   // ----------------------------------------------------------------------------------- //
   @UseGuards(JwtAuthGuard)

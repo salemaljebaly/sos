@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Citizen } from 'src/citizens/entities/citizen.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
@@ -13,6 +14,9 @@ export class ReportService {
   constructor(
     @InjectRepository(Report)
     private reportRepository: Repository<Report>,
+    
+    // @InjectRepository(User)
+    // private userRepository: Repository<User>,
   ) {}
   // ----------------------------------------------------------------------------------- //
   async create(citizen: Citizen, createReportDto: CreateReportDto) {
@@ -38,10 +42,10 @@ export class ReportService {
   }
   // ----------------------------------------------------------------------------------- //
   // get all reports by user id
-  async findByUser(userId: number) {
+  async findByUser(id: number) {
     const reports = await this.reportRepository.find({
       where: {
-        reporter: userId,
+        reporter: id,
       },
       relations: ['reporter']
     });
@@ -53,8 +57,18 @@ export class ReportService {
   }
   // ----------------------------------------------------------------------------------- //
   // update report
-  update(id: number, updateReportDto: UpdateReportDto) {
-    return this.reportRepository.update(id, updateReportDto);
+  async update(id: number, updateReportDto: UpdateReportDto, user : any) {
+    // TODO needs to fix
+    // if(user.role != null){
+    //   const currentUser = this.userRepository.findOne(
+    //     {where:{id: user.userId}}
+    //   );
+    //   updateReportDto.user = user;
+    //   console.log(updateReportDto);
+    //   return this.reportRepository.update(id, {...updateReportDto, user:   await currentUser});
+    // } else {
+      return this.reportRepository.update(id, updateReportDto);
+    // }
   }
   // ----------------------------------------------------------------------------------- //
   async uploadFile(id: number, filetype: string, reportFilePath : string) {

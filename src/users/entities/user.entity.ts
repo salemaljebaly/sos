@@ -4,11 +4,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Role } from 'src/auth/enum/role.enum';
+import { Report } from 'src/report/entities/report.entity';
+import { About } from 'src/about/entities/about.entity';
+import { PoliceOffice } from 'src/police-office/entities/police-office.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -62,4 +66,12 @@ export class User extends BaseEntity {
   })
   role: Role
   // ----------------------------------------------------------------------------------- //
+  @OneToMany(() => Report, (report: Report) => report.reporter)
+  report : Report[];
+  // ----------------------------------------------------------------------------------- //
+  @OneToMany(() => About, (about: About) => about.user)
+  about : About[];
+  // ----------------------------------------------------------------------------------- //
+  @OneToMany(() => PoliceOffice, (office: PoliceOffice) => office.user)
+  policeOffices : PoliceOffice[];
 }

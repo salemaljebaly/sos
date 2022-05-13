@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsLatitude, IsLongitude, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Citizen } from "src/citizens/entities/citizen.entity";
+import { User } from "src/users/entities/user.entity";
 import { IsNull } from "typeorm";
 import { FileTypes, ReportState, ReportType } from "../enums/reporttype";
 
@@ -49,5 +50,7 @@ export class CreateReportDto {
     @ApiProperty({type: String, enum: FileTypes})
     fileType: string;
 
-    reporter : Citizen
+    reporter : Citizen;
+
+    user : User;
 }

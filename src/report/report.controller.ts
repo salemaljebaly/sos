@@ -35,6 +35,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { FileTypes } from './enums/reporttype';
 import fs = require('fs');
 import { AR } from 'src/locale/ar';
+import { ReportGetWay } from './report.getway';
 // ----------------------------------------------------------------------------------- //
 export const storage = {
   storage: diskStorage({
@@ -78,7 +79,7 @@ export class ReportController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ description: AR.report_created })
-  create(@Body() createReportDto: CreateReportDto, @Request() req) {
+  create(@Body() createReportDto: CreateReportDto, @Request() req) { 
     // get the current citizen data
     const citizen = req.user;
     return this.reportService.create(citizen, createReportDto);
@@ -119,8 +120,10 @@ export class ReportController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  update(@Param('id') id: string, @Body() updateReportDto: UpdateReportDto) {
-    return this.reportService.update(+id, updateReportDto);
+  update(@Param('id') id: string, @Body() updateReportDto: UpdateReportDto, @Request() req) {
+    const user = req.user;
+    console.log(req.user)
+    return this.reportService.update(+id, updateReportDto, user);
   }
   // ----------------------------------------------------------------------------------- //
   @Delete(':id')

@@ -16,7 +16,7 @@ export class AuthService {
     const user = await this.validateUser(authLoginDto);
 
     const payload = {
-      userId: user.id,
+      id: user.id,
       username: user.username,
       firstname: user.firstName,
       lastname: user.lastName,

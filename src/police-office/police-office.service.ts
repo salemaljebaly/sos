@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AR } from 'src/locale/ar';
+import { User } from 'src/users/entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { CreatePoliceOfficeDto } from './dto/create-police-office.dto';
 import { UpdatePoliceOfficeDto } from './dto/update-police-office.dto';
@@ -14,7 +15,8 @@ export class PoliceOfficeService {
     private policeOfficeRepository: Repository<PoliceOffice>,
   ) {}
   // ----------------------------------------------------------------------------------- //
-  create(createPoliceOfficeDto: CreatePoliceOfficeDto) {
+  create(createPoliceOfficeDto: CreatePoliceOfficeDto, user : User) {
+    createPoliceOfficeDto.user = user;
     const police_office = this.policeOfficeRepository.create(
       createPoliceOfficeDto,
     );

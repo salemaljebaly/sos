@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsString,
 } from 'class-validator';
+import { User } from 'src/users/entities/user.entity';
 export class CreatePoliceOfficeDto {
   // ----------------------------------------------------------------------------------- //
   @IsString()
@@ -25,4 +26,5 @@ export class CreatePoliceOfficeDto {
   @ApiProperty({ type: String, description: 'latitude' })
   latitude: string;
   // ----------------------------------------------------------------------------------- //
+  user : User;
 }

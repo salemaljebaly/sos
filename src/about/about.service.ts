@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateAboutDto } from './dto/create-about.dto';
 import { UpdateAboutDto } from './dto/update-about.dto';
@@ -14,8 +15,10 @@ export class AboutService {
   ) {}
   // ----------------------------------------------------------------------------------- //
 
-  create(createAboutDto: CreateAboutDto) {
-    return this.aboutRepository.create(createAboutDto).save();
+  async create(createAboutDto: CreateAboutDto, user : User) {
+    createAboutDto.user = user;
+    console.log(user)
+    return await this.aboutRepository.create(createAboutDto).save();
   }
   // ----------------------------------------------------------------------------------- //
 
