@@ -58,17 +58,13 @@ export class ReportService {
   // ----------------------------------------------------------------------------------- //
   // update report
   async update(id: number, updateReportDto: UpdateReportDto, user : any) {
-    // TODO needs to fix
-    // if(user.role != null){
-    //   const currentUser = this.userRepository.findOne(
-    //     {where:{id: user.userId}}
-    //   );
-    //   updateReportDto.user = user;
-    //   console.log(updateReportDto);
-    //   return this.reportRepository.update(id, {...updateReportDto, user:   await currentUser});
-    // } else {
+    if(user.role != null){
+      updateReportDto.user = user;
+      console.log(updateReportDto);
+      return this.reportRepository.update(id,updateReportDto,);
+    } else {
       return this.reportRepository.update(id, updateReportDto);
-    // }
+    }
   }
   // ----------------------------------------------------------------------------------- //
   async uploadFile(id: number, filetype: string, reportFilePath : string) {
