@@ -1,27 +1,28 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsLatitude, IsLongitude, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Citizen } from "src/citizens/entities/citizen.entity";
+import { AR } from "src/locale/ar";
 import { User } from "src/users/entities/user.entity";
 import { IsNull } from "typeorm";
 import { FileTypes, ReportState, ReportType } from "../enums/reporttype";
 
 export class CreateReportDto {
     
-    @IsString()
+    @IsString({message: AR.IsString})
     @ApiProperty({type: String, description: 'desc'})
     desc: string
     
-    @IsString()
+    @IsString({message: AR.IsString})
     @IsEnum(ReportType)
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, enum: ReportType})
     type: string;
     
     
 
-    @IsString()
+    @IsString({message: AR.IsString})
     @IsEnum(ReportState)
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, enum: ReportState})
     state: string;
 
@@ -36,17 +37,17 @@ export class CreateReportDto {
 
     // report attach
     @IsOptional()
-    @IsString()
-    @IsNotEmpty()
+    @IsString({message: AR.IsString})
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, nullable:true})
     reportFilePath: string;
 
 
     
     @IsOptional()
-    @IsString()
+    @IsString({message: AR.IsString})
     @IsEnum(FileTypes)
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, enum: FileTypes})
     fileType: string;
 

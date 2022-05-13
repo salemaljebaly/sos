@@ -5,16 +5,17 @@ import {
   IsNotEmpty,
   IsString,
 } from 'class-validator';
+import { AR } from 'src/locale/ar';
 import { User } from 'src/users/entities/user.entity';
 export class CreatePoliceOfficeDto {
   // ----------------------------------------------------------------------------------- //
-  @IsString()
-  @IsNotEmpty()
+  @IsString({message: AR.IsString})
+  @IsNotEmpty({message: AR.IsNotEmpty})
   @ApiProperty({ type: String, description: 'office name' })
   office_name: string;
   // ----------------------------------------------------------------------------------- //
-  @IsString()
-  @IsNotEmpty()
+  @IsString({message: AR.IsString})
+  @IsNotEmpty({message: AR.IsNotEmpty})
   @ApiProperty({ type: String, description: 'office city' })
   office_city: string;
   // ----------------------------------------------------------------------------------- //

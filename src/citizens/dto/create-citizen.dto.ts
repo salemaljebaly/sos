@@ -1,51 +1,52 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsEmail, IsLatitude, IsLongitude, isLongitude, IsNotEmpty, IsPhoneNumber, IsString, MinLength } from "class-validator";
+import { AR } from "src/locale/ar";
 import { Long } from "typeorm";
 
 export class CreateCitizenDto {
     
-    @IsString()
+    @IsString({message: AR.IsString})
     @MinLength(3)
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, description: 'firstname'})
     firstName: string;
   
-    @IsString()
+    @IsString({message: AR.IsString})
     @MinLength(3)
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, description: 'lastname'})
     lastName: string;
   
-    @IsString()
-    @IsNotEmpty()
+    @IsString({message: AR.IsString})
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, description: 'username'})
     username: string;
 
     
     @IsEmail()
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, description: 'email'})
     email: string;
 
     
     @IsPhoneNumber()
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, description: 'phone'})
     phone: string;
 
     
-    @IsString()
+    @IsString({message: AR.IsString})
     @MinLength(6)
-    @IsNotEmpty()
+    @IsNotEmpty({message: AR.IsNotEmpty})
     @ApiProperty({type: String, description: 'password'})
     password: string;
 
     
-    @IsBoolean()
+    @IsBoolean({message: AR.IsBoolean})
     @ApiProperty({type: Boolean, description: 'isActive'})
     isActive: boolean;
 
-    @IsString()
+    @IsString({message: AR.IsString})
     @ApiProperty({type: String, description: 'city'})
     city : string
 
