@@ -1,6 +1,6 @@
 FROM node:16.13.2
 
-WORKDIR /usr/src/library_app
+WORKDIR /usr/src/sos_app
 
 COPY package*.json ./
 
