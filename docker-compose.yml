@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  sos_api:
+    container_name: sos-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=mysqldb
+      - DB_USERNAME=root
+      - DB_PASSWORD=s1239875      
+    ports:
+      - 5000:5000
+    depends_on:
+      - mysqldb
+
+      
+  sos_frontend:
+    container_name: sos-frontend
+    build: ../sos_frontend
+    ports:
+      - 5001:5001
+    depends_on:
+      - sos_api
+
+    
+
