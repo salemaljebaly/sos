@@ -1,6 +1,19 @@
 version: '3.9'
 
 services:
+  mysqlsos:
+    container_name: mysql-container
+    image: mysql:oracle
+    command: --default-authentication-plugin=mysql_native_password
+    # restart: always
+    environment:
+      MYSQL_DATABASE: sos
+      MYSQL_ROOT_PASSWORD: s1239875
+      MYSQL_PASSWORD: s1239875
+      MYSQL_USER: db_user
+    ports:
+      - 5001:3306
+
   sos_api:
     container_name: sos-api
     build:
@@ -8,11 +21,13 @@ services:
       dockerfile: Dockerfile
     environment:
       - DB_PORT=3306
-      - DB_HOST=mysqldb
+      - DB_HOST=mysqlsos
       - DB_USERNAME=root
       - DB_PASSWORD=s1239875      
     ports:
       - 5000:5000
+    depends_on:
+      - mysqlsos
 
       
   sos_frontend:
@@ -22,11 +37,6 @@ services:
       - 3001:3001
     depends_on:
       - sos_api
-
-networks: 
-  default: 
-    external: true
-    name: mysql-networks 
 
     
 
