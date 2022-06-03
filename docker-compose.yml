@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   mysqlsos:
-    container_name: mysql-container
+    container_name: mysql-sos-container
     image: mysql:oracle
     command: --default-authentication-plugin=mysql_native_password
     # restart: always
