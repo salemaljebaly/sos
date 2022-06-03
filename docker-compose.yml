@@ -13,17 +13,20 @@ services:
       - DB_PASSWORD=s1239875      
     ports:
       - 5000:5000
-    depends_on:
-      - mysqldb
 
       
   sos_frontend:
     container_name: sos-frontend
     build: ../sos_frontend
     ports:
-      - 5001:5001
+      - 3001:3001
     depends_on:
       - sos_api
+
+networks: 
+  default: 
+    external: true
+    name: mysql-networks 
 
     
 
