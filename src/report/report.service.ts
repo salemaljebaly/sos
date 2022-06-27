@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Citizen } from 'src/citizens/entities/citizen.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { Report } from './entities/report.entity';
-import { FileTypes } from './enums/reporttype';
+import { FileTypes, ReportState } from './enums/reporttype';
 
 @Injectable()
 export class ReportService {
@@ -30,6 +30,11 @@ export class ReportService {
   // get all reports with current user authorized
   findAll() {
     return this.reportRepository.find({ relations: ['reporter'] });
+  }
+  // ----------------------------------------------------------------------------------- //
+  // get all reports with current user authorized
+  reportsByState() {
+    return this.reportRepository.find({where: {state : Not(ReportState.DONE)} ,relations: ['reporter'] });
   }
   // ----------------------------------------------------------------------------------- //
   // get report by user id

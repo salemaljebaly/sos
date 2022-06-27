@@ -10,9 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
-  Res,
-  HttpException,
-  HttpStatus,
+  Res
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -67,7 +65,7 @@ export const storage = {
     },
   }),
 };
-// ----------------------------------------------------------------------------------- //
+  // ----------------------------------------------------------------------------------- //
 @ApiTags('Reports')
 @Controller('report')
 export class ReportController {
@@ -90,6 +88,14 @@ export class ReportController {
   @ApiBearerAuth()
   getByUser(@Request() req) {
     return this.reportService.findByUser(req.user.id);
+  }
+  // ----------------------------------------------------------------------------------- //
+  @Get('reportsbystate')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  reportsByState() {
+    console.log('------- report by state -------')
+    return this.reportService.reportsByState();
   }
   // ----------------------------------------------------------------------------------- //
   @Get()
